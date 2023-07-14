@@ -7,6 +7,7 @@ class PostCreate(BaseModel):
     text: str
 
 
-class ShowPost(PostCreate):
-    post_id: uuid.UUID
+class ShowPost(BaseModel):
+    uuid: uuid.UUID
+    text: str
 
