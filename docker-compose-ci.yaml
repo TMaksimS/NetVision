@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: "db"
+    image: postgres:13.11-bullseye
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  app:
+    container_name: app
+    image: myapp
+    depends_on:
+      - db
+    environment:
+      APP_PORT: "8000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+volumes:
+  db-data:
