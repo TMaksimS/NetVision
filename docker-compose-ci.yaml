@@ -1,7 +1,7 @@
 services:
   db:
-    container_name: "db"
-    image: postgres:13.11-bullseye
+    container_name: db
+    image: postgres:15.3-alpine3.17
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -9,19 +9,26 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - "5432:5432"
+    networks:
+      - custom
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql15.3/data
   app:
     container_name: app
     image: myapp
     depends_on:
       - db
     environment:
-      APP_PORT: "8000"
+      REAL_DATABASE_URL: postgresql+asyncpg://postgres:postgres@db/postgres
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    networks:
+      - custom
+networks:
+  custom:
+    driver: bridge
 volumes:
   db-data:
