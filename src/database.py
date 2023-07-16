@@ -3,9 +3,10 @@ from typing import AsyncGenerator
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncAttrs
 
-DB_URL = f"postgresql+asyncpg://postgres:postgres@0.0.0.0:5432/postgres"
+from settings import REAL_DATABASE_URL
 
-engine = create_async_engine(DB_URL, echo=True)
+engine = create_async_engine(REAL_DATABASE_URL, echo=True)
+
 async_session_maker = sessionmaker(engine, expire_on_commit=False,
                                    class_=AsyncSession)
 

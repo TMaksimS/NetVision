@@ -58,7 +58,7 @@ class PostBL:
                         for post in posts]
             else:
                 raise HTTPException(status_code=204,
-                                    detail={"Message": "No Content"})
+                                    detail={"message": "No Content"})
 
     @staticmethod
     async def get_current_post(post_id: uuid.UUID,
@@ -71,7 +71,7 @@ class PostBL:
                                 text=post.text)
             else:
                 raise HTTPException(status_code=404,
-                                    detail={"Message": "Incorrect request"})
+                                    detail={"message": "Incorrect request"})
 
     @staticmethod
     async def get_count_post(count: int,
@@ -84,7 +84,7 @@ class PostBL:
                         for post in posts]
             else:
                 raise HTTPException(status_code=204,
-                                    detail={"Message": "No Content"})
+                                    detail={"message": "No Content"})
 
     @staticmethod
     async def delete_post(post_id: uuid.UUID,
@@ -93,7 +93,7 @@ class PostBL:
             connect = PostDB(session=session)
             data = await connect.get_current_post(post_id=post_id)
             if data:
-                result = await connect.delete_post(post_id=post_id)
+                await connect.delete_post(post_id=post_id)
                 return {"uuid": f"{post_id}",
                         "message": "Post has been deleted"}
             else:
