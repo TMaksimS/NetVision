@@ -23,8 +23,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: sh -c "sleep 3 && alembic upgrade head && python3 main.py"
     ports:
       - "8000:8000"
+    networks:
+      - custom
+  client:
+    container_name: client_app
+    image: myapp
+    depends_on:
+      - app
+    environment:
+      APP_URL: http://app:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    command: sh -c "sleep 5 && python3 clientapp.py"
     networks:
       - custom
 networks:
