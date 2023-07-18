@@ -34,13 +34,19 @@ services:
     command: sh -c "alembic upgrade head && python3 main.py"
     ports:
       - "8000:8000"
+    healthcheck:
+      test: sh -c "curl http://app:8000"
+      interval: 5s
+      timeout: 5s
+      retries: 6
     networks:
       - custom
   client:
     container_name: client_app
     image: myapp
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     environment:
       APP_URL: http://app:8000
     build:
