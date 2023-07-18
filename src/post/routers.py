@@ -12,8 +12,7 @@ app = APIRouter()
 
 
 @app.post("/new")
-async def create_new_post(text: str,
-                          session: AsyncSession = Depends(get_db)):
+async def create_new_post(text: str, session: AsyncSession = Depends(get_db)):
     result = await PostBL.create_post(text=text, session=session)
     return jsonable_encoder(result)
 

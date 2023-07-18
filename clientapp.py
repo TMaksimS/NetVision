@@ -1,9 +1,10 @@
-import aiohttp
 import asyncio
 import string
 import random
 import time
-from datetime import datetime
+import logging
+
+import aiohttp
 
 from settings import APP_URL
 
@@ -29,8 +30,7 @@ async def get_count_posts(count: int = 10) -> list | None:
             all_data = await response.json()
             result = [data["uuid"] for data in all_data]
             return result
-        else:
-            return None
+        return None
 
 
 async def delete_current_posts(data: list) -> int | None:
@@ -44,7 +44,11 @@ async def delete_current_posts(data: list) -> int | None:
 
 
 async def main():
-    print(f"Клиент был запущен {datetime.now()}")
+    logging.basicConfig(
+        format='INFO: [clientapp] %(asctime)s - %(message)s',
+        level=logging.INFO
+    )
+    logging.info("The client has been started")
     await create_posts()
     total = 0
     iterations = 0
@@ -57,10 +61,11 @@ async def main():
             counter += result
             total += result
         else:
-            print(f"Всего было удалено {total} постов. {datetime.now()}")
+            logging.info(f"Total posts deleted {total}")
             break
         iterations += 1
-        print(f"Итерация № {iterations}: Было удалено {counter} постов. {datetime.now()}")
+        logging.info(f"Iteration № {iterations}: "
+                     f"posts have been deleted {counter}.")
 
 
 if __name__ == "__main__":

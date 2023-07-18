@@ -1,6 +1,6 @@
-FROM python:3.10-alpine
+FROM python:3.10-slim
+COPY ./requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 COPY . .
 WORKDIR .
-RUN pip install --user --upgrade pip
-RUN pip install -r requirements.txt
-

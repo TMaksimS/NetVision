@@ -16,11 +16,13 @@ from main import app
 
 async def get_db_test() -> AsyncGenerator[AsyncSession, None]:
     try:
-        engine_test = create_async_engine(REAL_DATABASE_URL,
-                                          echo=True)
-        async_session_maker = sessionmaker(engine_test,
-                                           class_=AsyncSession,
-                                           expire_on_commit=False)
+        engine_test = create_async_engine(
+            REAL_DATABASE_URL, echo=True)
+        async_session_maker = sessionmaker(
+            engine_test,
+            class_=AsyncSession,
+            expire_on_commit=False
+        )
         yield async_session_maker()
     finally:
         pass
@@ -42,8 +44,16 @@ async def client() -> Generator[TestClient, Any, None]:
 
 @pytest.fixture(scope="session")
 async def async_session_test():
-    engine = create_async_engine(REAL_DATABASE_URL, future=True, echo=True)
-    async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+    engine = create_async_engine(
+        REAL_DATABASE_URL,
+        future=True,
+        echo=True
+        )
+    async_session = sessionmaker(
+        engine,
+        expire_on_commit=False,
+        class_=AsyncSession
+    )
     yield async_session
 
 
@@ -74,6 +84,7 @@ async def create_post_in_db(asyncpg_pool):
             return await connection.execute(
                 """INSERT INTO posts VALUES ($1, $2)""",
                 id,
-                text, )
-
+                text,
+            )
     return create_post
+

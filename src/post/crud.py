@@ -33,7 +33,9 @@ class PostDB:
         return result.all()
 
     async def delete_post(self, post_id: uuid.UUID) -> Result:
-        stmt = delete(Post).where(Post.id == post_id).returning(Post.id)
+        stmt = (delete(Post)
+                .where(Post.id == post_id)
+                .returning(Post.id))
         return await self.session.execute(stmt)
 
 
@@ -53,12 +55,15 @@ class PostBL:
         async with session.begin():
             connect = PostDB(session=session)
             posts = await connect.get_all_posts()
-            if posts:
-                return [ShowPost(uuid=post.id, text=post.text)
-                        for post in posts]
-            else:
-                raise HTTPException(status_code=204,
-                                    detail={"message": "No Content"})
+            if not posts:
+                raise HTTPException(
+                    status_code=204,
+                    detail={"message": "No Content"}
+                )
+            return [
+                ShowPost(uuid=post.id, text=post.text)
+                for post in posts
+            ]
 
     @staticmethod
     async def get_current_post(post_id: uuid.UUID,
@@ -66,25 +71,32 @@ class PostBL:
         async with session.begin():
             connect = PostDB(session=session)
             post = await connect.get_current_post(post_id=post_id)
-            if post:
-                return ShowPost(uuid=post.id,
-                                text=post.text)
-            else:
-                raise HTTPException(status_code=404,
-                                    detail={"message": "Incorrect request"})
+            if not post:
+                raise HTTPException(
+                    status_code=404,
+                    detail={"message": "Incorrect request"})
+            return ShowPost(
+                uuid=post.id,
+                text=post.text
+            )
 
     @staticmethod
-    async def get_count_post(count: int,
-                             session: AsyncSession) -> list[ShowPost]:
+    async def get_count_post(
+            count: int,
+            session: AsyncSession
+    ) -> list[ShowPost]:
         async with session.begin():
             connect = PostDB(session=session)
             posts = await connect.get_count_post(count=count)
-            if posts:
-                return [ShowPost(uuid=post.id, text=post.text)
-                        for post in posts]
-            else:
-                raise HTTPException(status_code=204,
-                                    detail={"message": "No Content"})
+            if not posts:
+                raise HTTPException(
+                    status_code=204,
+                    detail={"message": "No Content"}
+                )
+            return [
+                ShowPost(uuid=post.id, text=post.text)
+                for post in posts
+            ]
 
     @staticmethod
     async def delete_post(post_id: uuid.UUID,
@@ -92,10 +104,12 @@ class PostBL:
         async with session.begin():
             connect = PostDB(session=session)
             data = await connect.get_current_post(post_id=post_id)
-            if data:
-                await connect.delete_post(post_id=post_id)
-                return {"uuid": f"{post_id}",
-                        "message": "Post has been deleted"}
-            else:
-                raise HTTPException(status_code=404,
-                                    detail={"message": "Incorrect request"})
+            if not data:
+                raise HTTPException(
+                    status_code=404,
+                    detail={"message": "Incorrect request"})
+            await connect.delete_post(post_id=post_id)
+            return {
+                "uuid": f"{post_id}",
+                "message": "Post has been deleted",
+            }
