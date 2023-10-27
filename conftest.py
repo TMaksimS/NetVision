@@ -8,7 +8,6 @@ from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-
 from src.database import get_db
 from settings import REAL_DATABASE_URL
 from main import app
@@ -48,7 +47,7 @@ async def async_session_test():
         REAL_DATABASE_URL,
         future=True,
         echo=True
-        )
+    )
     async_session = sessionmaker(
         engine,
         expire_on_commit=False,
@@ -86,5 +85,5 @@ async def create_post_in_db(asyncpg_pool):
                 id,
                 text,
             )
-    return create_post
 
+    return create_post

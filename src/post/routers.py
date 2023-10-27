@@ -2,8 +2,9 @@ import uuid
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 from src.database import get_db
 from src.post.crud import PostBL
@@ -41,4 +42,3 @@ async def delete_current_post(uuid: uuid.UUID,
                               session: AsyncSession = Depends(get_db)):
     result = await PostBL.delete_post(post_id=uuid, session=session)
     return JSONResponse(content=result, status_code=200)
-

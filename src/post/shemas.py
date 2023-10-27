@@ -10,4 +10,3 @@ class PostCreate(BaseModel):
 class ShowPost(BaseModel):
     uuid: uuid.UUID
     text: str
-

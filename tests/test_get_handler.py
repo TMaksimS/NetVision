@@ -25,6 +25,3 @@ async def test_get_current_post(
 async def test_get_current_post_invalid(client: TestClient):
     response = client.get(f"/post/{uuid.uuid4()}")
     assert response.status_code == 404
-
-
-

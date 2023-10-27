@@ -10,4 +10,3 @@ APP_URL = env.str(
     "APP_URL",
     default="http://0.0.0.0:8000"
 )
-

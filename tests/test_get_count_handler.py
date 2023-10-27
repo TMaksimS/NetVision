@@ -9,7 +9,7 @@ async def test_get_count_handler(
         create_post_in_db: fixture
 ):
     count = 3
-    for i in range(count):
+    for _ in range(count):
         post_id = uuid.uuid4()
         await create_post_in_db(post_id, "Counter post")
 

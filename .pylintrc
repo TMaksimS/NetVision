@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable = C0114, C0116, C0115, R0903, W0621, W0622, W1203
+
+[MASTER]
+ignore-paths = migrations, tests

@@ -14,10 +14,3 @@ async def test_create_new_post(client: TestClient, get_post_from_db):
     post_from_db = dict(data_from_db[0])
     assert str(post_from_db["id"]) == data_from_resp["uuid"]
     assert post_from_db["text"] == data_from_resp["text"]
-
-
-
-
-
-
-
