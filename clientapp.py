@@ -9,16 +9,16 @@ import aiohttp
 from settings import APP_URL
 
 
-def create_random_string(lenght):
+def create_random_string(length):
     characters = string.ascii_letters + string.digits
-    text = "".join(random.choice(characters) for _ in range(lenght))
+    text = "".join(random.choice(characters) for _ in range(length))
     return text
 
 
-async def create_posts(lenght: int = 16):
+async def create_posts(length: int = 16):
     async with aiohttp.ClientSession(base_url=f"{APP_URL}") as session:
         for _ in range(random.randint(10, 100)):
-            text = create_random_string(lenght=lenght)
+            text = create_random_string(length=length)
             async with session.post(f"/post/new?text={text}"):
                 pass
 
